@@ -34,7 +34,6 @@ class MyWebServer(SocketServer.BaseRequestHandler):
         print ("Got a request of: %s\n" % self.data)
 
         response = self.getResponse()
-        print "response: " + str(response)
 
         self.request.sendall(response)
 
@@ -64,24 +63,20 @@ class MyWebServer(SocketServer.BaseRequestHandler):
         
         # extract the path from the request
         path = self.data.split(' ', 2)[1].strip("/")
-        
-        print "origional path: " + path + "\n"
 
         # check if path has www already
         if path.split("/", 1)[0] != 'www':
             path = "www/" + path
-
+        
+        # get rid of any '..'
         path = os.path.abspath(path)
-        print("absolute path: " + path + "\n")
 
         # check if the path is a directory or a file
-        if os.path.isdir(path):
-            print "path is a directory"
+        if os.path.isdir(path): 
             path = path + "/index.html"
 
-        # make sure the file exists
-        if os.path.isfile(path):
-            print "file exists"
+        # make sure the file exists and is in the www directory
+        if os.path.isfile(path) and ("www" in path):
             return self.ok(path)
         else:
             return self.not_found()
