@@ -62,7 +62,7 @@ class MyWebServer(SocketServer.BaseRequestHandler):
     def get_path(self):
         
         # extract the path from the request
-        path = self.data.split(' ', 2)[1].strip("/")
+        path = self.data.split(' ', 2)[1]
 
         # check if path has www already
         if path.split("/", 1)[0] != 'www':
